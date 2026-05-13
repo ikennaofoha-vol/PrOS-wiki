@@ -19,11 +19,11 @@
                 extend: {
                     colors: {
                         voltera: {
-                            blue: '#0057FF',
-                            blueDark: '#0046CC',
-                            blueDraft: '#00D1FF',
-                            green: '#00C853',
-                            yellow: '#FFB700',
+                            blue: '#00C2F5',      /* Updated Voltera Blue */
+                            blueDark: '#00A3D1',
+                            blueDraft: '#00C2F5', 
+                            green: '#6FCF2A',     /* Updated Voltera Green */
+                            yellow: '#FFB700',    /* Updated Voltera Yellow */
                             red: '#FF3033',
                             white: '#FFFFFF',
                             slate: {
@@ -42,15 +42,15 @@
         .phase-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border-width: 2px; }
         .phase-card:hover { transform: translateY(-4px); }
         
-        .phase-card.approved { border-color: #00C853; background-color: rgba(0, 200, 83, 0.05); }
-        .dark .phase-card.approved { background-color: rgba(0, 200, 83, 0.1); }
-        .phase-card.approved .dot { background-color: #00C853; box-shadow: 0 0 10px #00C853; }
+        .phase-card.approved { border-color: #6FCF2A; background-color: rgba(111, 207, 42, 0.05); }
+        .dark .phase-card.approved { background-color: rgba(111, 207, 42, 0.1); }
+        .phase-card.approved .dot { background-color: #6FCF2A; box-shadow: 0 0 10px #6FCF2A; }
         
         .phase-card.active-phase { border-color: #FFB700; background-color: rgba(255, 183, 0, 0.05); }
         .dark .phase-card.active-phase { background-color: rgba(255, 183, 0, 0.1); }
         .phase-card.active-phase .dot { background-color: #FFB700; box-shadow: 0 0 15px #FFB700; animation: pulse-yellow 2s infinite; }
 
-        .status-pill.active-project { border: 2px solid #0057FF; background: #1e1b4b !important; color: white !important; }
+        .status-pill.active-project { border: 2px solid #00C2F5; background: #1e1b4b !important; color: white !important; }
 
         @keyframes pulse-yellow { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
         
@@ -62,33 +62,42 @@
         /* Tab System Styling */
         .tab-btn { transition: all 0.2s ease; }
         .tab-btn.active { 
-            color: #0057FF;
-            border-bottom: 2px solid #0057FF;
+            color: #00C2F5;
+            border-bottom: 2px solid #00C2F5;
         }
 
         /* Herb Specific Styling */
         .herb-box {
-            border-left: 4px solid #0057FF;
-            background: rgba(0, 87, 255, 0.03);
+            border-left: 4px solid #00C2F5;
+            background: rgba(0, 194, 245, 0.03);
         }
         .dark .herb-box {
-            background: rgba(0, 87, 255, 0.05);
+            background: rgba(0, 194, 245, 0.05);
         }
 
-        /* Strategic Container Styling */
+        /* Strategic Container Styling - Reduced borders and padding to allow larger phase cards */
         .strategic-container {
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 2rem;
             border: 1px solid transparent;
             transition: background 0.3s ease;
         }
-        .scoping-box { background: rgba(0, 87, 255, 0.1); border-color: rgba(0, 87, 255, 0.05); }
-        .planning-box { background: rgba(255, 183, 0, 0.1); border-color: rgba(255, 183, 0, 0.05); }
-        .executing-box { background: rgba(255, 48, 51, 0.1); border-color: rgba(255, 48, 51, 0.05); }
+        .scoping-box { 
+            background: rgba(0, 194, 245, 0.18); 
+            border-color: rgba(0, 194, 245, 0.1); 
+        }
+        .planning-box { 
+            background: rgba(255, 183, 0, 0.18); 
+            border-color: rgba(255, 183, 0, 0.1); 
+        }
+        .executing-box { 
+            background: rgba(111, 207, 42, 0.18); 
+            border-color: rgba(111, 207, 42, 0.1); 
+        }
         
-        .dark .scoping-box { background: rgba(0, 87, 255, 0.08); }
-        .dark .planning-box { background: rgba(255, 183, 0, 0.08); }
-        .dark .executing-box { background: rgba(255, 48, 51, 0.08); }
+        .dark .scoping-box { background: rgba(0, 194, 245, 0.12); }
+        .dark .planning-box { background: rgba(255, 183, 0, 0.12); }
+        .dark .executing-box { background: rgba(111, 207, 42, 0.12); }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-voltera-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
@@ -203,10 +212,10 @@
                         <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Hobbyists</p>
                         <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span class="text-voltera-blue">Play</span> with electronics</p>
                     </div>
-                    <div class="herb-box p-4 rounded-xl" style="border-color: #00C853;">
-                        <span class="font-black text-3xl" style="color: #00C853;">E</span>
+                    <div class="herb-box p-4 rounded-xl" style="border-color: #6FCF2A;">
+                        <span class="font-black text-3xl" style="color: #6FCF2A;">E</span>
                         <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Educators</p>
-                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #00C853;">Prepare</span> their students</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #6FCF2A;">Prepare</span> their students</p>
                     </div>
                     <div class="herb-box p-4 rounded-xl" style="border-color: #FFB700;">
                         <span class="font-black text-3xl" style="color: #FFB700;">R</span>
@@ -218,10 +227,10 @@
                         <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Builders</p>
                         <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #FF3033;">Prototype</span> an idea</p>
                     </div>
-                    <div class="herb-box p-4 rounded-xl" style="border-color: #00D1FF;">
-                        <span class="font-black text-3xl" style="color: #00D1FF;">S</span>
+                    <div class="herb-box p-4 rounded-xl" style="border-color: #00C2F5;">
+                        <span class="font-black text-3xl" style="color: #00C2F5;">S</span>
                         <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Scalers</p>
-                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #00D1FF;">Produce</span> in volume</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #00C2F5;">Produce</span> in volume</p>
                     </div>
                 </div>
             </div>
@@ -247,39 +256,39 @@
                         </thead>
                         <tbody class="text-sm font-medium">
                             <tr class="bg-slate-800/50 rounded-xl">
-                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-blueDraft rounded-l-xl uppercase tracking-tighter">Hobbyists</td>
+                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-blue rounded-l-xl uppercase tracking-tighter">Hobbyists</td>
                                 <td class="py-4 px-4 text-slate-300">Brand Awareness</td>
-                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-blueDraft/20 text-voltera-blueDraft rounded text-[10px] font-black">PLAY</span></td>
+                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-blue/20 text-voltera-blue rounded text-[10px] font-black">PLAY</span></td>
                                 <td class="py-4 px-4 font-black text-white">Raven</td>
-                                <td class="py-4 px-4 text-voltera-blueDraft font-bold">Phase 2: Market Research</td>
+                                <td class="py-4 px-4 text-[#00C2F5] font-bold">Phase 2: Market Research</td>
                             </tr>
                             <tr class="bg-slate-800/50 rounded-xl">
                                 <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-green rounded-l-xl uppercase tracking-tighter">Educators</td>
                                 <td class="py-4 px-4 text-slate-300">Brand Awareness</td>
                                 <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-green/20 text-voltera-green rounded text-[10px] font-black">PREPARE</span></td>
                                 <td class="py-4 px-4 font-black text-white">V-One</td>
-                                <td class="py-4 px-4 text-voltera-green font-bold">Phase 9: Post-Launch</td>
+                                <td class="py-4 px-4 text-[#6FCF2A] font-bold">Phase 9: Post-Launch</td>
                             </tr>
                             <tr class="bg-slate-800/50 rounded-xl">
                                 <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-yellow rounded-l-xl uppercase tracking-tighter">Researchers</td>
                                 <td class="py-4 px-4 text-slate-300">Profit Centers</td>
                                 <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-yellow/20 text-voltera-yellow rounded text-[10px] font-black">PUBLISH</span></td>
                                 <td class="py-4 px-4 font-black text-white">NOVA</td>
-                                <td class="py-4 px-4 text-voltera-green font-bold">Phase 9: Post-Launch</td>
+                                <td class="py-4 px-4 text-[#6FCF2A] font-bold">Phase 9: Post-Launch</td>
                             </tr>
                             <tr class="bg-slate-800/50 rounded-xl">
                                 <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-red rounded-l-xl uppercase tracking-tighter">Builders</td>
                                 <td class="py-4 px-4 text-slate-300">Profit Centers</td>
                                 <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-red/20 text-voltera-red rounded text-[10px] font-black">PROTOTYPE</span></td>
                                 <td class="py-4 px-4 font-black text-white">ALTA</td>
-                                <td class="py-4 px-4 text-voltera-yellow font-bold">Phase 7: Development</td>
+                                <td class="py-4 px-4 text-[#6FCF2A] font-bold">Phase 7: Development</td>
                             </tr>
                             <tr class="bg-slate-800/50 rounded-xl">
                                 <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-blue rounded-l-xl uppercase tracking-tighter">Scalers</td>
                                 <td class="py-4 px-4 text-slate-300">Profit Centers</td>
                                 <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-blue/20 text-voltera-blue rounded text-[10px] font-black">PRODUCE</span></td>
                                 <td class="py-4 px-4 font-black text-white">Falcon</td>
-                                <td class="py-4 px-4 text-voltera-yellow font-bold">Phase 5: Business Case</td>
+                                <td class="py-4 px-4 text-[#FFB700] font-bold">Phase 5: Business Case</td>
                             </tr>
                         </tbody>
                     </table>
@@ -381,6 +390,7 @@
 
         /**
          * Standard color helper based on defined statuses.
+         * FIX: Added explicit 'text-voltera-...' classes to ensure readability in light mode.
          */
         function getStatusColorInfo(status) {
             const s = (status || "").toLowerCase().trim();
@@ -388,9 +398,9 @@
             if (['active', 'working', 'draft', 'in progress'].includes(s)) {
                 return { 
                     color: 'voltera-blueDraft', 
-                    bg: 'bg-cyan-50 dark:bg-voltera-blueDraft/10 border-voltera-blueDraft/30', 
+                    bg: 'bg-voltera-blue/10 dark:bg-voltera-blueDraft/10 border-voltera-blueDraft/30', 
                     icon: 'fa-pen-nib', 
-                    text: 'voltera-blueDraft' 
+                    text: 'text-voltera-blue' 
                 };
             }
             // Red: Critical/Stopped/Failed
@@ -399,33 +409,33 @@
                     color: 'voltera-red', 
                     bg: 'bg-red-50 dark:bg-voltera-red/10 border-voltera-red/30', 
                     icon: 'fa-exclamation-triangle', 
-                    text: 'voltera-red' 
+                    text: 'text-voltera-red' 
                 };
             }
             // Yellow: Warning/Pending/Review/Waiting
             if (['warning', 'pending', 'review', 'waiting'].includes(s)) {
                 return { 
                     color: 'voltera-yellow', 
-                    bg: 'bg-yellow-50 dark:bg-voltera-yellow/10 border-voltera-yellow/30', 
+                    bg: 'bg-voltera-yellow/10 dark:bg-voltera-yellow/10 border-voltera-yellow/30', 
                     icon: 'fa-clock', 
-                    text: 'voltera-yellow' 
+                    text: 'text-voltera-yellow' 
                 };
             }
             // Green: Success/Pass/Completed/Approved
             if (['success', 'pass', 'completed', 'approved'].includes(s)) {
                 return { 
                     color: 'voltera-green', 
-                    bg: 'bg-green-50 dark:bg-voltera-green/10 border-voltera-green/30', 
+                    bg: 'bg-voltera-green/10 dark:bg-voltera-green/10 border-voltera-green/30', 
                     icon: 'fa-check-circle', 
-                    text: 'voltera-green' 
+                    text: 'text-voltera-green' 
                 };
             }
             // Default Gray
             return { 
                 color: 'slate-400', 
-                bg: 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700', 
+                bg: 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700', 
                 icon: 'fa-info-circle', 
-                text: 'slate-500' 
+                text: 'text-slate-500' 
             };
         }
 
@@ -608,7 +618,7 @@
                     inputsSect.className = "order-4";
                     outGateSect.className = "grid grid-cols-1 md:grid-cols-2 gap-8 order-5";
 
-                    statusBox.className = "mb-10 p-6 rounded-2xl flex items-center gap-5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm";
+                    statusBox.className = "mb-10 p-6 rounded-2xl flex items-center gap-5 bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm";
                     statusIcon.innerHTML = '<i class="fas fa-info-circle text-slate-400 text-xl"></i>';
                     statusLabel.innerText = "General Methodology";
                     statusAction.innerHTML = '<p class="text-xs font-bold text-slate-500 font-inter">Select a project to view specific audit artifacts.</p>';
@@ -635,7 +645,7 @@
                             for(let i=1; i<=5; i++) {
                                 const m = getMilestoneData(track, i);
                                 if (m.name) {
-                                    checklistContainer.innerHTML += `<div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800"><div class="w-5 h-5 rounded-md flex items-center justify-center ${m.done ? 'bg-voltera-green text-white shadow-[0_0_8px_#00C853]' : 'bg-slate-200 dark:bg-slate-700'}"><i class="fas fa-check text-[10px]"></i></div><span class="text-sm font-medium ${m.done ? 'line-through opacity-50' : ''}">${m.name}</span></div>`;
+                                    checklistContainer.innerHTML += `<div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800"><div class="w-5 h-5 rounded-md flex items-center justify-center ${m.done ? 'bg-voltera-green text-white shadow-[0_0_8px_#6FCF2A]' : 'bg-slate-200 dark:bg-slate-700'}"><i class="fas fa-check text-[10px]"></i></div><span class="text-sm font-medium ${m.done ? 'line-through opacity-50' : ''}">${m.name}</span></div>`;
                                 }
                             }
                         }
@@ -663,7 +673,7 @@
                         statusBox.className = "mb-10 p-6 rounded-2xl flex items-center gap-5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm";
                         statusIcon.innerHTML = '<i class="fas fa-lock text-slate-300 text-xl"></i>';
                         statusLabel.innerText = "Upcoming Roadmap";
-                        statusAction.innerHTML = '<p class="text-sm font-bold text-slate-400 italic font-inter text-sm">Not yet started.</p>';
+                        statusAction.innerHTML = '<p class="text-xs font-bold text-slate-400 italic font-inter text-sm">Not yet started.</p>';
                     }
 
                     const coreDoc = projectArtifacts.find(a => getVal(a, ['iscore'], 4).toString().toUpperCase() === 'TRUE');
@@ -695,7 +705,7 @@
             stages.forEach(stage => {
                 let stageHtml = `
                     <div class="strategic-container ${stage.class} flex flex-col gap-4">
-                        <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-center mb-2 opacity-60">${stage.title}</h4>
+                        <h4 class="text-[12px] font-black uppercase tracking-[0.25em] text-center mb-2 opacity-70">${stage.title}</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
                 `;
 
@@ -724,7 +734,7 @@
                             ${stateLabel}
                             <h3 class="font-bold text-[10px] mt-1 mb-2 uppercase tracking-tighter leading-tight h-8 flex items-center justify-center dark:text-white font-inter text-center">${getVal(phaseData, ['title'], 1)}</h3>
                             ${progressBarHtml}
-                            <div class="dot w-2 h-2 ${focusedProject ? 'bg-slate-200 dark:bg-slate-700' : (i===1 ? 'bg-voltera-blue shadow-[0_0_8px_#0057FF]' : 'bg-slate-200 dark:bg-slate-700')} rounded-full mb-3 transition-colors mx-auto mt-1"></div>
+                            <div class="dot w-2 h-2 ${focusedProject ? 'bg-slate-200 dark:bg-slate-700' : (i===1 ? 'bg-voltera-blue shadow-[0_0_8px_#00C2F5]' : 'bg-slate-200 dark:bg-slate-700')} rounded-full mb-3 transition-colors mx-auto mt-1"></div>
                             <span class="mt-auto text-[8px] text-slate-400 font-black uppercase tracking-widest group-hover:text-voltera-blue transition-colors font-inter">Details <i class="fas fa-chevron-right ml-1 text-[7px]"></i></span>
                         </div>`;
                 });
@@ -790,7 +800,7 @@
 
             cachedPhases = phases; cachedPortfolio = portfolio; cachedArtifacts = artifacts; cachedTracking = tracking;
             renderEngine(); renderPortfolio();
-            document.getElementById('sync-status').innerHTML = `<div class="w-2 h-2 bg-voltera-green rounded-full shadow-[0_0_8px_#00C853]"></div> Synchronized`;
+            document.getElementById('sync-status').innerHTML = `<div class="w-2 h-2 bg-voltera-green rounded-full shadow-[0_0_8px_#6FCF2A]"></div> Synchronized`;
             document.getElementById('last-updated').innerText = `Updated: ${new Date().toLocaleTimeString()}`;
         }
         window.onload = initDashboard;
