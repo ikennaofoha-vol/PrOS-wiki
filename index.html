@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <!-- Open Graph / Iframely metadata to trigger GitBook Embed -->
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:title" content="Voltera PrOS Guide">
+    <meta name="twitter:player" content="https://ikennaofoha-vol.github.io/pros-wiki/">
+    <meta name="twitter:player:width" content="1280">
+    <meta name="twitter:player:height" content="720">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltera PrOS | Product Operating System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        voltera: {
+                            blue: '#0057FF',
+                            blueDark: '#0046CC',
+                            blueDraft: '#00D1FF',
+                            green: '#00C853',
+                            yellow: '#FFB700',
+                            red: '#FF3033',
+                            white: '#FFFFFF',
+                            slate: {
+                                950: '#0A0C10'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        .phase-card { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border-width: 2px; }
+        .phase-card:hover { transform: translateY(-4px); }
+        
+        .phase-card.approved { border-color: #00C853; background-color: rgba(0, 200, 83, 0.05); }
+        .dark .phase-card.approved { background-color: rgba(0, 200, 83, 0.1); }
+        .phase-card.approved .dot { background-color: #00C853; box-shadow: 0 0 10px #00C853; }
+        
+        .phase-card.active-phase { border-color: #FFB700; background-color: rgba(255, 183, 0, 0.05); }
+        .dark .phase-card.active-phase { background-color: rgba(255, 183, 0, 0.1); }
+        .phase-card.active-phase .dot { background-color: #FFB700; box-shadow: 0 0 15px #FFB700; animation: pulse-yellow 2s infinite; }
+
+        .status-pill.active-project { border: 2px solid #0057FF; background: #1e1b4b !important; color: white !important; }
+
+        @keyframes pulse-yellow { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        
+        #detail-drawer { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .drawer-open { transform: translateX(0) !important; }
+        
+        .progress-bar-inner { transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+
+        /* Tab System Styling */
+        .tab-btn { transition: all 0.2s ease; }
+        .tab-btn.active { 
+            color: #0057FF;
+            border-bottom: 2px solid #0057FF;
+        }
+
+        /* Herb Specific Styling */
+        .herb-box {
+            border-left: 4px solid #0057FF;
+            background: rgba(0, 87, 255, 0.03);
+        }
+        .dark .herb-box {
+            background: rgba(0, 87, 255, 0.05);
+        }
+
+        /* Strategic Container Styling */
+        .strategic-container {
+            padding: 1.5rem;
+            border-radius: 2rem;
+            border: 1px solid transparent;
+            transition: background 0.3s ease;
+        }
+        .scoping-box { background: rgba(0, 87, 255, 0.1); border-color: rgba(0, 87, 255, 0.05); }
+        .planning-box { background: rgba(255, 183, 0, 0.1); border-color: rgba(255, 183, 0, 0.05); }
+        .executing-box { background: rgba(255, 48, 51, 0.1); border-color: rgba(255, 48, 51, 0.05); }
+        
+        .dark .scoping-box { background: rgba(0, 87, 255, 0.08); }
+        .dark .planning-box { background: rgba(255, 183, 0, 0.08); }
+        .dark .executing-box { background: rgba(255, 48, 51, 0.08); }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-voltera-slate-950 text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+
+    <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 transition-colors text-slate-900 dark:text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="flex items-center gap-3">
+                <div class="bg-voltera-blue p-2 rounded-lg shadow-lg shadow-blue-500/20">
+                    <i class="fas fa-microchip text-white"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm font-extrabold tracking-tight uppercase leading-none">Voltera <span class="text-voltera-blue">PrOS</span></span>
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Product Operating System</span>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="hidden md:flex items-center gap-8 h-full">
+                <button id="tab-os" onclick="switchTab('os')" class="tab-btn active text-[10px] font-black uppercase tracking-widest h-full border-b-2 border-transparent hover:text-voltera-blue transition-all">PrOS Guide</button>
+                <button id="tab-herbs" onclick="switchTab('herbs')" class="tab-btn text-[10px] font-black uppercase tracking-widest h-full border-b-2 border-transparent hover:text-voltera-blue transition-all">Book of Herbs</button>
+            </nav>
+            
+            <div class="flex items-center gap-4">
+                <div class="hidden lg:flex items-center gap-3 bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 border-r border-slate-200 dark:border-slate-600 pr-3">
+                        <span id="creator-label">Made By:</span> <span id="creator-name" class="text-slate-900 dark:text-white font-bold">Ikenna Ofoha</span>
+                    </span>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-voltera-blue">Status: <span class="animate-pulse font-black uppercase">In Progress</span></span>
+                </div>
+
+                <div id="sync-status" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    <div class="w-2 h-2 bg-slate-300 rounded-full"></div> Offline
+                </div>
+                
+                <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 dark:text-voltera-yellow hover:ring-2 ring-voltera-blue transition-all">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main PrOS OS Section -->
+    <main id="section-os" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <section class="mb-12 bg-white dark:bg-slate-900 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors">
+            <div class="relative z-10 max-w-4xl">
+                <h1 id="hero-title" class="text-4xl md:text-5xl font-black mb-6 leading-tight text-slate-900 dark:text-white">How Ideas Become <span class="text-voltera-blue">Hardware.</span></h1>
+                <p id="hero-desc" class="text-lg text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-8">
+                    The Voltera Product Operating System (PrOS) is our unified workflow and "Truth Engine."
+                </p>
+
+                <!-- Dynamic System Instructions Callout -->
+                <div id="hero-instr-container" class="hidden mb-8 p-6 bg-indigo-50/50 dark:bg-slate-800/40 border-l-8 border-voltera-blue rounded-r-3xl">
+                    <h4 class="text-[10px] font-black uppercase tracking-widest text-voltera-blue mb-2">System Instructions</h4>
+                    <p id="hero-instructions" class="text-sm md:text-base font-bold italic text-slate-700 dark:text-slate-200 leading-relaxed"></p>
+                </div>
+                
+                <div id="active-focus-bar" class="hidden items-center gap-3 bg-blue-50 dark:bg-voltera-blue/10 border border-voltera-blue/20 p-4 rounded-2xl w-fit">
+                    <i class="fas fa-bullseye text-voltera-blue"></i>
+                    <span class="text-sm font-bold font-inter">Focusing on: <span id="focused-project-name" class="text-voltera-blue uppercase font-black tracking-widest text-sm"></span></span>
+                    <button onclick="resetFocus()" class="text-slate-400 hover:text-voltera-red ml-4 transition-all hover:scale-110"><i class="fas fa-times-circle text-xl"></i></button>
+                </div>
+            </div>
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-indigo-50 dark:bg-voltera-blue/5 rounded-full blur-3xl opacity-50 text-slate-900 dark:text-white"></div>
+        </section>
+
+        <section class="mb-16">
+            <h2 class="text-2xl font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-8 text-center md:text-left font-inter">The PrOS Engine</h2>
+            <div id="engine-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6 font-inter">
+                <!-- Grouped Containers generated via JS -->
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="bg-slate-900 dark:bg-black rounded-3xl p-8 text-white shadow-2xl border border-white/5">
+                <div class="flex items-center justify-between mb-10">
+                    <div>
+                        <h2 class="text-2xl font-black uppercase tracking-wider text-voltera-blue font-inter">Portfolio Status</h2>
+                        <p class="text-slate-400 font-medium italic font-inter text-sm">Audit artifacts by selecting a project lifecycle row.</p>
+                    </div>
+                    <span id="last-updated" class="text-xs font-black uppercase tracking-widest text-slate-500">Syncing...</span>
+                </div>
+                <div class="overflow-x-auto font-inter">
+                    <table class="w-full text-left border-separate border-spacing-y-4">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-500 uppercase tracking-widest px-4 font-inter">
+                                <th class="pb-2 px-4">Product Name</th>
+                                <th class="pb-2 px-4">Active Phase</th>
+                                <th class="pb-2 px-4">Vault Count</th>
+                                <th class="pb-2 px-4">Phase Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="map-body" class="text-sm font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- BOOK OF HERBS Section -->
+    <main id="section-herbs" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 hidden">
+        <section class="mb-12 bg-white dark:bg-slate-900 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden transition-colors">
+            <div class="relative z-10 max-w-4xl">
+                <h1 class="text-4xl md:text-5xl font-black mb-6 leading-tight text-slate-900 dark:text-white">The Book of <span class="text-voltera-blue">HERBS.</span></h1>
+                <p class="text-lg text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-8">
+                    Voltera's underlying product strategy. Each segment has unique needs, motivations, and workflows. Our roadmap meets them where they are.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="herb-box p-4 rounded-xl">
+                        <span class="text-voltera-blue font-black text-3xl">H</span>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Hobbyists</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span class="text-voltera-blue">Play</span> with electronics</p>
+                    </div>
+                    <div class="herb-box p-4 rounded-xl" style="border-color: #00C853;">
+                        <span class="font-black text-3xl" style="color: #00C853;">E</span>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Educators</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #00C853;">Prepare</span> their students</p>
+                    </div>
+                    <div class="herb-box p-4 rounded-xl" style="border-color: #FFB700;">
+                        <span class="font-black text-3xl" style="color: #FFB700;">R</span>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Researchers</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #FFB700;">Publish</span> an innovation</p>
+                    </div>
+                    <div class="herb-box p-4 rounded-xl" style="border-color: #FF3033;">
+                        <span class="font-black text-3xl" style="color: #FF3033;">B</span>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Builders</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #FF3033;">Prototype</span> an idea</p>
+                    </div>
+                    <div class="herb-box p-4 rounded-xl" style="border-color: #00D1FF;">
+                        <span class="font-black text-3xl" style="color: #00D1FF;">S</span>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Scalers</p>
+                        <p class="text-xs font-bold text-slate-600 dark:text-slate-300 mt-2 italic">Looking to <span style="color: #00D1FF;">Produce</span> in volume</p>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute -right-20 -top-20 w-80 h-80 bg-indigo-50 dark:bg-voltera-blue/5 rounded-full blur-3xl opacity-50"></div>
+        </section>
+
+        <section class="mb-20">
+            <div class="bg-slate-900 dark:bg-black rounded-3xl p-8 text-white shadow-2xl border border-white/5">
+                <div class="mb-10">
+                    <h2 class="text-2xl font-black uppercase tracking-wider text-voltera-blue font-inter">Strategic Segments</h2>
+                    <p class="text-slate-400 font-medium italic font-inter text-sm">Mapping segments to products and current development cycles.</p>
+                </div>
+                <div class="overflow-x-auto font-inter">
+                    <table class="w-full text-left border-separate border-spacing-y-4">
+                        <thead>
+                            <tr class="text-[10px] font-black text-slate-500 uppercase tracking-widest px-4">
+                                <th class="pb-2 px-4">Segment</th>
+                                <th class="pb-2 px-4">Our Goal</th>
+                                <th class="pb-2 px-4">User Goal</th>
+                                <th class="pb-2 px-4">Core Product</th>
+                                <th class="pb-2 px-4">Current Phase</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm font-medium">
+                            <tr class="bg-slate-800/50 rounded-xl">
+                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-blueDraft rounded-l-xl uppercase tracking-tighter">Hobbyists</td>
+                                <td class="py-4 px-4 text-slate-300">Brand Awareness</td>
+                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-blueDraft/20 text-voltera-blueDraft rounded text-[10px] font-black">PLAY</span></td>
+                                <td class="py-4 px-4 font-black text-white">Raven</td>
+                                <td class="py-4 px-4 text-voltera-blueDraft font-bold">Phase 2: Market Research</td>
+                            </tr>
+                            <tr class="bg-slate-800/50 rounded-xl">
+                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-green rounded-l-xl uppercase tracking-tighter">Educators</td>
+                                <td class="py-4 px-4 text-slate-300">Brand Awareness</td>
+                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-green/20 text-voltera-green rounded text-[10px] font-black">PREPARE</span></td>
+                                <td class="py-4 px-4 font-black text-white">V-One</td>
+                                <td class="py-4 px-4 text-voltera-green font-bold">Phase 9: Post-Launch</td>
+                            </tr>
+                            <tr class="bg-slate-800/50 rounded-xl">
+                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-yellow rounded-l-xl uppercase tracking-tighter">Researchers</td>
+                                <td class="py-4 px-4 text-slate-300">Profit Centers</td>
+                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-yellow/20 text-voltera-yellow rounded text-[10px] font-black">PUBLISH</span></td>
+                                <td class="py-4 px-4 font-black text-white">NOVA</td>
+                                <td class="py-4 px-4 text-voltera-green font-bold">Phase 9: Post-Launch</td>
+                            </tr>
+                            <tr class="bg-slate-800/50 rounded-xl">
+                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-red rounded-l-xl uppercase tracking-tighter">Builders</td>
+                                <td class="py-4 px-4 text-slate-300">Profit Centers</td>
+                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-red/20 text-voltera-red rounded text-[10px] font-black">PROTOTYPE</span></td>
+                                <td class="py-4 px-4 font-black text-white">ALTA</td>
+                                <td class="py-4 px-4 text-voltera-yellow font-bold">Phase 7: Development</td>
+                            </tr>
+                            <tr class="bg-slate-800/50 rounded-xl">
+                                <td class="py-4 px-4 font-black text-lg border-l-4 border-voltera-blue rounded-l-xl uppercase tracking-tighter">Scalers</td>
+                                <td class="py-4 px-4 text-slate-300">Profit Centers</td>
+                                <td class="py-4 px-4"><span class="px-2 py-1 bg-voltera-blue/20 text-voltera-blue rounded text-[10px] font-black">PRODUCE</span></td>
+                                <td class="py-4 px-4 font-black text-white">Falcon</td>
+                                <td class="py-4 px-4 text-voltera-yellow font-bold">Phase 5: Business Case</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200 dark:border-slate-800 mt-12 mb-20 text-center text-slate-900 dark:text-white">
+        <p id="footer-text" class="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-600">
+            Voltera PrOS • Institutional Memory Vault • Est. 2013
+        </p>
+    </footer>
+
+    <div id="drawer-overlay" class="fixed inset-0 bg-black/60 z-[60] opacity-0 pointer-events-none transition-opacity duration-300" onclick="toggleDrawer()"></div>
+    <div id="detail-drawer" class="fixed top-0 right-0 h-full w-full max-w-xl bg-white dark:bg-slate-900 shadow-2xl z-[70] overflow-y-auto translate-x-full p-10 transition-colors text-slate-900 dark:text-white font-inter">
+        <div class="flex items-center justify-between mb-10">
+            <div id="drawer-phase-badge" class="bg-voltera-blue text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">Phase X</div>
+            <button onclick="toggleDrawer()" class="text-slate-400 hover:text-voltera-red transition-colors"><i class="fas fa-times text-2xl"></i></button>
+        </div>
+        
+        <h2 id="drawer-title" class="text-3xl font-black mb-2 leading-tight">Phase Title</h2>
+        <p id="drawer-question" class="text-lg text-voltera-blue font-bold italic mb-10 leading-relaxed">The Key Question?</p>
+        
+        <div id="drawer-status-box" class="mb-10 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-all overflow-hidden flex flex-col gap-4">
+            <div class="flex items-center gap-5">
+                <div id="drawer-status-icon" class="w-12 h-12 rounded-xl flex items-center justify-center bg-white dark:bg-slate-800 shadow-sm shrink-0"></div>
+                <div class="flex-1">
+                    <p id="drawer-status-label" class="text-[10px] font-black uppercase tracking-widest opacity-60">Status</p>
+                    <div id="drawer-status-action" class="mt-1"></div>
+                </div>
+            </div>
+            
+            <div id="drawer-progress-container" class="w-full space-y-2">
+                <div class="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    <span>Phase Completion</span>
+                    <span id="drawer-progress-percent">0%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div id="drawer-progress-bar" class="h-full bg-voltera-blue progress-bar-inner" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="drawer-content-flow" class="flex flex-col space-y-12 pb-20">
+            <div id="master-methodology-section" class="order-1">
+                <h4 id="methodology-label" class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 border-b dark:border-slate-800 pb-2 flex items-center gap-2">
+                    <i class="fas fa-file-invoice text-indigo-400"></i> Phase Output Template
+                </h4>
+                <div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    <div class="w-12 h-12 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center text-voltera-blue shadow-sm">
+                        <i class="fas fa-download text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                        <span id="drawer-artifact-name" class="font-bold text-slate-800 dark:text-slate-200 text-sm">Artifact Name</span>
+                        <a id="drawer-template-link" href="#" target="_blank" class="block text-voltera-blue text-[10px] font-black uppercase tracking-widest mt-1 hover:underline">Download Template <i class="fas fa-external-link-alt ml-1 text-[8px]"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="core-artifact-section" class="order-2">
+                <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 border-b dark:border-slate-800 pb-2 flex items-center gap-2">
+                    <i class="fas fa-star text-voltera-yellow"></i> Primary Phase Artifact
+                </h4>
+                <div id="core-artifact-container" class="space-y-4"></div>
+            </div>
+
+            <div id="inputs-section" class="order-4">
+                <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 border-b dark:border-slate-800 pb-2">Methodology Inputs</h4>
+                <div id="drawer-inputs" class="text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed"></div>
+            </div>
+            
+            <div id="output-gate-section" class="grid grid-cols-1 md:grid-cols-2 gap-8 order-5">
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 border-b dark:border-slate-800 pb-2 text-indigo-400">Output</h4>
+                    <div id="drawer-output" class="text-slate-700 dark:text-slate-300 text-sm font-bold"></div>
+                </div>
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 border-b dark:border-slate-800 pb-2">Decision Gate</h4>
+                    <div id="drawer-gate" class="text-voltera-blue text-xs font-bold italic leading-relaxed"></div>
+                </div>
+            </div>
+
+            <div id="checklist-section" class="order-6">
+                <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-4 border-b dark:border-slate-800 pb-2 text-indigo-400">Phase Milestone Checklist</h4>
+                <div id="checklist-container" class="space-y-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SHEET_ID = '1ybVCphkVj2pSchWNec3J2J0xm5Urpt5JYR764WkWyFo'; 
+        
+        let cachedPhases = []; 
+        let cachedPortfolio = []; 
+        let cachedArtifacts = [];
+        let cachedTracking = [];
+        let focusedProject = null;
+
+        /**
+         * Standard color helper based on defined statuses.
+         */
+        function getStatusColorInfo(status) {
+            const s = (status || "").toLowerCase().trim();
+            // Cyan-Blue: Active/Working/Draft/In Progress
+            if (['active', 'working', 'draft', 'in progress'].includes(s)) {
+                return { 
+                    color: 'voltera-blueDraft', 
+                    bg: 'bg-cyan-50 dark:bg-voltera-blueDraft/10 border-voltera-blueDraft/30', 
+                    icon: 'fa-pen-nib', 
+                    text: 'voltera-blueDraft' 
+                };
+            }
+            // Red: Critical/Stopped/Failed
+            if (['critical', 'stopped', 'failed'].includes(s)) {
+                return { 
+                    color: 'voltera-red', 
+                    bg: 'bg-red-50 dark:bg-voltera-red/10 border-voltera-red/30', 
+                    icon: 'fa-exclamation-triangle', 
+                    text: 'voltera-red' 
+                };
+            }
+            // Yellow: Warning/Pending/Review/Waiting
+            if (['warning', 'pending', 'review', 'waiting'].includes(s)) {
+                return { 
+                    color: 'voltera-yellow', 
+                    bg: 'bg-yellow-50 dark:bg-voltera-yellow/10 border-voltera-yellow/30', 
+                    icon: 'fa-clock', 
+                    text: 'voltera-yellow' 
+                };
+            }
+            // Green: Success/Pass/Completed/Approved
+            if (['success', 'pass', 'completed', 'approved'].includes(s)) {
+                return { 
+                    color: 'voltera-green', 
+                    bg: 'bg-green-50 dark:bg-voltera-green/10 border-voltera-green/30', 
+                    icon: 'fa-check-circle', 
+                    text: 'voltera-green' 
+                };
+            }
+            // Default Gray
+            return { 
+                color: 'slate-400', 
+                bg: 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700', 
+                icon: 'fa-info-circle', 
+                text: 'slate-500' 
+            };
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            const icon = document.getElementById('theme-icon');
+            if(icon) icon.className = 'fas fa-sun';
+        }
+
+        // --- Tab Switching Logic ---
+        function switchTab(tab) {
+            const osSect = document.getElementById('section-os');
+            const herbsSect = document.getElementById('section-herbs');
+            const osBtn = document.getElementById('tab-os');
+            const herbsBtn = document.getElementById('tab-herbs');
+
+            if (tab === 'os') {
+                osSect.classList.remove('hidden');
+                herbsSect.classList.add('hidden');
+                osBtn.classList.add('active');
+                herbsBtn.classList.remove('active');
+            } else {
+                osSect.classList.add('hidden');
+                herbsSect.classList.remove('hidden');
+                osBtn.classList.remove('active');
+                herbsBtn.classList.add('active');
+            }
+        }
+
+        // --- Helper: Robust Value Finder with Positional Fallback ---
+        function getVal(row, keywords, defaultIndex = 0) {
+            if (!row) return "";
+            const keys = Object.keys(row);
+            const clean = (s) => s.toString().toLowerCase().replace(/[^a-z0-9]/g, '');
+
+            for (const kw of keywords) {
+                const foundKey = keys.find(k => clean(k) === clean(kw));
+                if (foundKey) return row[foundKey];
+            }
+            for (const kw of keywords) {
+                const foundKey = keys.find(k => clean(k).includes(clean(kw)));
+                if (foundKey) return row[foundKey];
+            }
+            return row[keys[defaultIndex]] || "";
+        }
+
+        const getSheetUrl = (sheetName) => `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${sheetName}&t=${Date.now()}`;
+
+        async function fetchSheet(name) {
+            try {
+                const response = await fetch(getSheetUrl(name));
+                const text = await response.text();
+                // CLEAN: Remove Byte Order Mark and null/hidden characters
+                const cleanText = text.replace(/^\uFEFF/, '').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]/g, "");
+                return parseCSV(cleanText);
+            } catch (e) { 
+                console.error("Fetch failed:", name);
+                return []; 
+            }
+        }
+
+        function parseCSV(csv) {
+            if (!csv || !csv.includes(',')) return [];
+            const lines = csv.replace(/\r/g, '').split('\n');
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+            
+            return lines.slice(1).filter(line => line.trim() !== "").map(line => {
+                const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.replace(/"/g, '').trim());
+                const obj = {};
+                headers.forEach((h, i) => obj[h || `col_${i}`] = values[i] || "");
+                return obj;
+            });
+        }
+
+        function formatPercent(val) {
+            if (val === undefined || val === null || val === "") return "0%";
+            let s = val.toString().trim();
+            if (s.includes('%')) return s;
+            let n = parseFloat(s);
+            if (isNaN(n)) return "0%";
+            if (n <= 1 && n > 0 && s.length < 5) return (Math.round(n * 100)) + "%";
+            return Math.round(n) + "%";
+        }
+
+        function findTrackingRow(productName, phaseNum) {
+            if (!cachedTracking || !productName) return null;
+            const pName = productName.toLowerCase().trim();
+            const pNum = parseInt(phaseNum);
+            
+            return cachedTracking.find(t => {
+                const sheetProduct = getVal(t, ['product', 'productname'], 0).toLowerCase().trim();
+                const sheetPhaseStr = getVal(t, ['phase'], 1).toString();
+                const sheetPhaseNum = parseInt(sheetPhaseStr.match(/\d+/) || sheetPhaseStr);
+                return sheetProduct === pName && sheetPhaseNum === pNum;
+            });
+        }
+
+        function getMilestoneData(row, index) {
+            if (!row) return { name: "", done: false };
+            return {
+                name: getVal(row, [`m${index}`, `milestone${index}`], -1) || "",
+                done: (getVal(row, [`m${index}done`, `m${index}_done`, `milestone${index}done`], -1) || "").toString().toLowerCase() === 'true'
+            };
+        }
+
+        function focusProject(projectName) {
+            focusedProject = cachedPortfolio.find(p => getVal(p, ['productname', 'product'], 0).toLowerCase().trim() === projectName.toLowerCase().trim());
+            document.getElementById('focused-project-name').innerText = projectName;
+            document.getElementById('active-focus-bar').classList.remove('hidden');
+            document.getElementById('active-focus-bar').classList.add('flex');
+            renderPortfolio(); renderEngine();
+        }
+
+        function resetFocus() {
+            focusedProject = null;
+            document.getElementById('active-focus-bar').classList.remove('flex');
+            document.getElementById('active-focus-bar').classList.add('hidden');
+            renderPortfolio(); renderEngine();
+        }
+
+        function toggleDrawer(phaseNum) {
+            const drawer = document.getElementById('detail-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const statusBox = document.getElementById('drawer-status-box');
+            const statusIcon = document.getElementById('drawer-status-icon');
+            const statusLabel = document.getElementById('drawer-status-label');
+            const statusAction = document.getElementById('drawer-status-action');
+            
+            const coreContainer = document.getElementById('core-artifact-container');
+            const checklistContainer = document.getElementById('checklist-container');
+            const checklistSect = document.getElementById('checklist-section');
+            const progressContainer = document.getElementById('drawer-progress-container');
+            const progressBar = document.getElementById('drawer-progress-bar');
+            const progressPercentText = document.getElementById('drawer-progress-percent');
+            
+            const methodologySect = document.getElementById('master-methodology-section');
+            const coreSect = document.getElementById('core-artifact-section');
+            const inputsSect = document.getElementById('inputs-section');
+            const outGateSect = document.getElementById('output-gate-section');
+
+            if (phaseNum) {
+                const data = cachedPhases.find(p => parseInt(getVal(p, ['phase'], 0)) === phaseNum);
+                if (!data) return;
+
+                const outputName = getVal(data, ['output'], 4) || "Methodology";
+
+                document.getElementById('drawer-phase-badge').innerText = `Phase ${phaseNum}`;
+                document.getElementById('drawer-title').innerText = getVal(data, ['title'], 1) || `Phase ${phaseNum}`;
+                document.getElementById('drawer-question').innerText = getVal(data, ['keyquestion'], 2) || "";
+                document.getElementById('drawer-inputs').innerText = getVal(data, ['inputs'], 3) || "";
+                document.getElementById('drawer-output').innerText = outputName;
+                document.getElementById('drawer-gate').innerText = getVal(data, ['gatedecision'], 6) || "";
+                
+                document.getElementById('methodology-label').innerHTML = `<i class="fas fa-file-invoice text-indigo-400"></i> ${outputName} Template`;
+                document.getElementById('drawer-artifact-name').innerText = `${outputName} Template`;
+                document.getElementById('drawer-template-link').href = getVal(data, ['link'], 5) || "#";
+
+                coreContainer.innerHTML = '';
+                checklistContainer.innerHTML = '';
+                checklistSect.classList.add('hidden');
+                progressContainer.classList.add('hidden');
+
+                if (!focusedProject) {
+                    methodologySect.className = "order-1";
+                    coreSect.className = "order-2";
+                    inputsSect.className = "order-4";
+                    outGateSect.className = "grid grid-cols-1 md:grid-cols-2 gap-8 order-5";
+
+                    statusBox.className = "mb-10 p-6 rounded-2xl flex items-center gap-5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm";
+                    statusIcon.innerHTML = '<i class="fas fa-info-circle text-slate-400 text-xl"></i>';
+                    statusLabel.innerText = "General Methodology";
+                    statusAction.innerHTML = '<p class="text-xs font-bold text-slate-500 font-inter">Select a project to view specific audit artifacts.</p>';
+                    coreContainer.innerHTML = `<p class="text-slate-400 text-xs italic font-medium">Awaiting project selection...</p>`;
+                } else {
+                    coreSect.className = "order-1";
+                    inputsSect.className = "order-3";
+                    outGateSect.className = "grid grid-cols-1 md:grid-cols-2 gap-8 order-4";
+                    methodologySect.className = "order-5";
+
+                    const currentPhaseNum = parseInt((getVal(focusedProject, ['currentphase', 'phase'], 1) || "0").toString().match(/\d+/) || 0);
+                    const pName = getVal(focusedProject, ['productname', 'product'], 0).toLowerCase().trim();
+                    const projectArtifacts = cachedArtifacts.filter(a => getVal(a, ['productname', 'product'], 0).toLowerCase().trim() === pName && parseInt(getVal(a, ['phase'], 1)) === phaseNum);
+
+                    if (phaseNum === currentPhaseNum) {
+                        progressContainer.classList.remove('hidden');
+                        checklistSect.classList.remove('hidden');
+                        const track = findTrackingRow(getVal(focusedProject, ['productname', 'product'], 0), phaseNum);
+                        let pctVal = track ? (Object.values(track).find(v => v.toString().includes('%')) || "0%") : "0%";
+                        const pct = formatPercent(pctVal);
+                        progressBar.style.width = pct;
+                        progressPercentText.innerText = pct;
+                        if (track) {
+                            for(let i=1; i<=5; i++) {
+                                const m = getMilestoneData(track, i);
+                                if (m.name) {
+                                    checklistContainer.innerHTML += `<div class="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800"><div class="w-5 h-5 rounded-md flex items-center justify-center ${m.done ? 'bg-voltera-green text-white shadow-[0_0_8px_#00C853]' : 'bg-slate-200 dark:bg-slate-700'}"><i class="fas fa-check text-[10px]"></i></div><span class="text-sm font-medium ${m.done ? 'line-through opacity-50' : ''}">${m.name}</span></div>`;
+                                }
+                            }
+                        }
+                    }
+
+                    if (phaseNum < currentPhaseNum) {
+                        statusBox.className = "mb-10 p-6 rounded-2xl flex flex-col gap-4 bg-green-50 dark:bg-voltera-green/10 border-voltera-green/30 shadow-sm";
+                        statusIcon.innerHTML = '<i class="fas fa-check-circle text-voltera-green text-xl"></i>';
+                        statusLabel.innerText = "Completed & Approved";
+                        statusAction.innerHTML = `<p class="text-xs font-black text-voltera-green uppercase tracking-widest">Truth Locked</p>`;
+                        progressBar.className = "h-full bg-voltera-green progress-bar-inner";
+                        progressContainer.classList.remove('hidden');
+                        progressBar.style.width = "100%";
+                        progressPercentText.innerText = "100%";
+                    } else if (phaseNum === currentPhaseNum) {
+                        const statusVal = getVal(focusedProject, ['status'], 3) || "Active";
+                        const info = getStatusColorInfo(statusVal);
+                        
+                        statusBox.className = `mb-10 p-6 rounded-2xl flex flex-col gap-4 border ${info.bg} shadow-sm`;
+                        statusIcon.innerHTML = `<i class="fas ${info.icon} text-${info.color} text-xl"></i>`;
+                        statusLabel.innerText = "Active Stage: " + statusVal;
+                        statusAction.innerHTML = `<p class="text-xs font-black text-${info.color} uppercase tracking-widest animate-pulse">In Cycle</p>`;
+                        progressBar.className = `h-full bg-${info.color} progress-bar-inner`;
+                    } else {
+                        statusBox.className = "mb-10 p-6 rounded-2xl flex items-center gap-5 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm";
+                        statusIcon.innerHTML = '<i class="fas fa-lock text-slate-300 text-xl"></i>';
+                        statusLabel.innerText = "Upcoming Roadmap";
+                        statusAction.innerHTML = '<p class="text-sm font-bold text-slate-400 italic font-inter text-sm">Not yet started.</p>';
+                    }
+
+                    const coreDoc = projectArtifacts.find(a => getVal(a, ['iscore'], 4).toString().toUpperCase() === 'TRUE');
+                    if (coreDoc) {
+                        coreContainer.innerHTML = `<div class="bg-voltera-blue dark:bg-voltera-blue/20 p-5 rounded-2xl shadow-lg shadow-voltera-blue/10 border border-voltera-blue/30 group transition-all hover:bg-voltera-blue/40"><div class="flex justify-between items-start mb-2"><h5 class="font-bold text-voltera-white text-sm font-inter">${getVal(coreDoc, ['label'], 2)}</h5><a href="${getVal(coreDoc, ['url'], 3)}" target="_blank" class="text-white opacity-60 group-hover:opacity-100 transition-opacity"><i class="fas fa-external-link-alt"></i></a></div><p class="text-[11px] text-white/70 leading-relaxed italic font-inter">${getVal(coreDoc, ['description'], 5)}</p></div>`;
+                    }
+                }
+                drawer.classList.add('drawer-open'); overlay.classList.add('opacity-100', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            } else {
+                drawer.classList.remove('drawer-open'); overlay.classList.remove('opacity-100', 'pointer-events-auto');
+                document.body.style.overflow = '';
+            }
+        }
+
+        function renderEngine() {
+            const container = document.getElementById('engine-container');
+            container.innerHTML = '';
+            
+            const currentPhaseNum = focusedProject ? parseInt((getVal(focusedProject, ['currentphase', 'phase'], 1) || "0").toString().match(/\d+/) || 0) : 0;
+            const pName = focusedProject ? getVal(focusedProject, ['productname', 'product'], 0) : "";
+
+            const stages = [
+                { title: 'Scoping', class: 'scoping-box', phases: [1, 2, 3] },
+                { title: 'Planning', class: 'planning-box', phases: [4, 5, 6] },
+                { title: 'Executing', class: 'executing-box', phases: [7, 8, 9] }
+            ];
+
+            stages.forEach(stage => {
+                let stageHtml = `
+                    <div class="strategic-container ${stage.class} flex flex-col gap-4">
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-center mb-2 opacity-60">${stage.title}</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-3">
+                `;
+
+                stage.phases.forEach(i => {
+                    const phaseData = cachedPhases.find(p => parseInt(getVal(p, ['phase'], 0)) === i) || { title: `Phase ${i}` };
+                    let stateClass = 'border-slate-200 dark:border-slate-800'; 
+                    let stateLabel = `<span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Phase ${i}</span>`;
+                    let progressBarHtml = '';
+
+                    if (focusedProject) {
+                        const track = findTrackingRow(pName, i);
+                        const pct = formatPercent(track ? getVal(track, ['percent', '%'], 12) : (i < currentPhaseNum ? "100%" : "0%"));
+                        
+                        if (i < currentPhaseNum) { 
+                            stateClass = 'approved'; 
+                            stateLabel = `<span class="text-[9px] font-black text-voltera-green uppercase tracking-widest">Approved</span>`; 
+                        } else if (i === currentPhaseNum) { 
+                            stateClass = 'active-phase'; 
+                            stateLabel = `<span class="text-[9px] font-black text-voltera-yellow uppercase tracking-widest">Active</span>`; 
+                            progressBarHtml = `<div class="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full mt-1 overflow-hidden"><div class="h-full bg-voltera-yellow" style="width: ${pct}"></div></div><span class="text-[8px] font-black text-voltera-yellow">${pct}</span>`;
+                        }
+                    }
+
+                    stageHtml += `
+                        <div onclick="toggleDrawer(${i})" class="phase-card bg-white dark:bg-slate-900 p-4 rounded-2xl text-center flex flex-col items-center group ${stateClass} border h-full">
+                            ${stateLabel}
+                            <h3 class="font-bold text-[10px] mt-1 mb-2 uppercase tracking-tighter leading-tight h-8 flex items-center justify-center dark:text-white font-inter text-center">${getVal(phaseData, ['title'], 1)}</h3>
+                            ${progressBarHtml}
+                            <div class="dot w-2 h-2 ${focusedProject ? 'bg-slate-200 dark:bg-slate-700' : (i===1 ? 'bg-voltera-blue shadow-[0_0_8px_#0057FF]' : 'bg-slate-200 dark:bg-slate-700')} rounded-full mb-3 transition-colors mx-auto mt-1"></div>
+                            <span class="mt-auto text-[8px] text-slate-400 font-black uppercase tracking-widest group-hover:text-voltera-blue transition-colors font-inter">Details <i class="fas fa-chevron-right ml-1 text-[7px]"></i></span>
+                        </div>`;
+                });
+
+                stageHtml += `</div></div>`;
+                container.innerHTML += stageHtml;
+            });
+        }
+
+        function renderPortfolio() {
+            const mapBody = document.getElementById('map-body');
+            mapBody.innerHTML = '';
+            cachedPortfolio.forEach(product => {
+                const pName = getVal(product, ['productname', 'product'], 0);
+                if (!pName) return;
+                const isFocused = focusedProject && getVal(focusedProject, ['productname', 'product'], 0).toLowerCase().trim() === pName.toLowerCase().trim();
+                const statusStr = (getVal(product, ['status'], 3) || "Unknown");
+                const info = getStatusColorInfo(statusStr);
+                const currentPhase = getVal(product, ['currentphase', 'phase'], 1);
+                
+                const count = cachedArtifacts.filter(a => getVal(a, ['productname', 'product'], 0).toLowerCase().trim() === pName.toLowerCase().trim()).length;
+
+                mapBody.innerHTML += `
+                <tr onclick="focusProject('${pName}')" class="bg-slate-800/50 dark:bg-slate-900 rounded-xl status-pill group transition-all hover:bg-slate-800 ${isFocused ? 'active-project shadow-lg shadow-voltera-blue/20' : ''}">
+                    <td class="py-4 px-4 font-black text-lg border-l-4 ${isFocused ? 'border-voltera-white' : 'border-transparent'} rounded-l-xl uppercase tracking-tighter text-white font-inter">${pName}</td>
+                    <td class="py-4 px-4 font-bold tracking-tight text-slate-300 font-inter">${currentPhase}</td>
+                    <td class="py-4 px-4"><span class="bg-black/20 px-2 py-1 rounded text-[10px] font-black uppercase border border-white/5 text-[#a5b4fc] tracking-widest font-inter">${count} Artifacts</span></td>
+                    <td class="py-4 px-4">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${info.bg} ${info.text} font-bold font-inter">
+                            <i class="fas ${info.icon} mr-1"></i> ${statusStr}
+                        </span>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        async function initDashboard() {
+            const [phases, portfolio, artifacts, tracking, config] = await Promise.all([
+                fetchSheet('Phases'), fetchSheet('Portfolio'), fetchSheet('Artifacts'), fetchSheet('Tracking'), fetchSheet('Config')
+            ]);
+
+            // Apply Config values from Sheet
+            if (config.length) {
+                const findCfg = (key) => config.find(c => getVal(c, ['key'], 0).toLowerCase() === key.toLowerCase())?.Value || "";
+                
+                const title = findCfg('HeroTitle');
+                const desc = findCfg('HeroDescription');
+                const instr = findCfg('HeroInstructions');
+                const cLabel = findCfg('CreatorLabel');
+                const cName = findCfg('CreatorName');
+                const footer = findCfg('FooterCopy');
+
+                if (title) document.getElementById('hero-title').innerHTML = title;
+                if (desc) document.getElementById('hero-desc').innerText = desc;
+                if (instr) {
+                    document.getElementById('hero-instructions').innerText = instr;
+                    document.getElementById('hero-instr-container').classList.remove('hidden');
+                }
+                if (cLabel) document.getElementById('creator-label').innerText = cLabel;
+                if (cName) document.getElementById('creator-name').innerText = cName;
+                if (footer) document.getElementById('footer-text').innerText = footer;
+            }
+
+            cachedPhases = phases; cachedPortfolio = portfolio; cachedArtifacts = artifacts; cachedTracking = tracking;
+            renderEngine(); renderPortfolio();
+            document.getElementById('sync-status').innerHTML = `<div class="w-2 h-2 bg-voltera-green rounded-full shadow-[0_0_8px_#00C853]"></div> Synchronized`;
+            document.getElementById('last-updated').innerText = `Updated: ${new Date().toLocaleTimeString()}`;
+        }
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
